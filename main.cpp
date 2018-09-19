@@ -1,3 +1,4 @@
+// Author: Quentin Lurkin
 // Based on Simple GLFW example by Camilla Löwy <elmindreda@glfw.org>
 
 #include <GL/glew.h>
