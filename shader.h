@@ -1,0 +1,10 @@
+#ifndef SHADER_H
+#define SHADER_H
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+GLuint loadShader(const char* path, GLenum shaderType);
+GLuint createProgram(GLuint vertex_shader, GLuint fragment_shader);
+
+#endif
