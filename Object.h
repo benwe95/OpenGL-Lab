@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "vmath"
+#include "vmath.h"
 #include "Mesh.h"
 
 using namespace vmath;
@@ -19,15 +19,11 @@ class Object
     public:
     Object(Mesh* mesh, vec3 position, quaternion roration);
     ~Object();
-    void render();
+    void render(float time);
 
     vec3 getPosition();
     quaternion getRotation();
     Mesh* getMesh();
-    
-    void setup() = 0;
-    void update() = 0;
-    void teardown() = 0;
 };
 
 //TODO: Objects Tree

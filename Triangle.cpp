@@ -4,10 +4,8 @@
 
 using namespace std;
 
-Triangle::Triangle(GLuint program)
-{
-    this->program = program;
-    
+Triangle::Triangle(GLuint program) : Mesh(program)
+{   
     // Définition des VertexData
     const struct
     {
@@ -36,6 +34,8 @@ Triangle::Triangle(GLuint program)
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    glUseProgram(program);
+
     // Association des 2 1ères composantes des VertexData à la variable "vPos" du pipeline
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), (void*) 0);
@@ -45,7 +45,7 @@ Triangle::Triangle(GLuint program)
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), (void*) (sizeof(float) * 2));
 }
 
-void Triangle::render()
+void Triangle::render(float time)
 {
     // Selection du VertexArray
     glBindVertexArray(vertex_array);

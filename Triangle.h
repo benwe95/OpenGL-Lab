@@ -6,14 +6,13 @@
 
 #include "Mesh.h"
 
-class TriangleMesh : public Mesh
+class Triangle : public Mesh
 {
     public:
     Triangle(GLuint program);
-    void render();
+    void render(float time);
 
     private:
-    GLuint program;
     GLuint vertex_array;
 };
 
