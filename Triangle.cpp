@@ -45,8 +45,15 @@ Triangle::Triangle(GLuint program) : Mesh(program)
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), (void*) (sizeof(float) * 2));
 }
 
-void Triangle::render(float time)
+void Triangle::update(float time) {}
+
+void Triangle::render(mat4 mvp)
 {
+    GLuint program = getProgram();
+    GLint mvp_location = glGetUniformLocation(program, "MVP");
+    glUseProgram(program);
+    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
+
     // Selection du VertexArray
     glBindVertexArray(vertex_array);
 

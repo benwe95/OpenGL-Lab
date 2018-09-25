@@ -13,16 +13,17 @@ class Object
 {
     private:
     vec3 position;
-    quaternion rotation;
+    mat4 rotation;
     Mesh* mesh;
 
     public:
-    Object(Mesh* mesh, vec3 position, quaternion roration);
+    Object(Mesh* mesh, vec3 position, mat4 roration);
     ~Object();
-    void render(float time);
+    void render(mat4 mvp);
+    void update(float time);
 
     vec3 getPosition();
-    quaternion getRotation();
+    mat4 getRotation();
     Mesh* getMesh();
 };
 
