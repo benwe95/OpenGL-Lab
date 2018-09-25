@@ -4,8 +4,10 @@
 
 using namespace std;
 
-Triangle::Triangle()
+Triangle::Triangle(GLuint program)
 {
+    this->program = program;
+    
     // Définition des VertexData
     const struct
     {
@@ -18,12 +20,7 @@ Triangle::Triangle()
         {   0.f,  0.6f, 0.f, 0.f, 1.f }
     };
 
-    GLint program;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &program);
-    if(!glIsProgram(program))
-    {
-        cout << "You must call glUseProgram Before Instanciate Triangle." << endl;
-    }
+    GLint vpos_location, vcol_location;
 
     // Récupération des "location" des variable "vPos" et "vCol" du pipeline
     vpos_location = glGetAttribLocation(program, "vPos");

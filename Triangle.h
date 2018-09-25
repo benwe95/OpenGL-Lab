@@ -1,19 +1,20 @@
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+#ifndef TRIANGLE_MESH_H
+#define TRIANGLE_MESH_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-class Triangle
+#include "Mesh.h"
+
+class TriangleMesh : public Mesh
 {
     public:
-    Triangle();
+    Triangle(GLuint program);
     void render();
 
     private:
+    GLuint program;
     GLuint vertex_array;
-    GLint vpos_location, vcol_location;
-
 };
 
 #endif
