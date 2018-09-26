@@ -13,7 +13,6 @@ class Mesh
     public:
     Mesh(GLuint program);
     GLuint getProgram();
-    virtual void update(float time) = 0;
     virtual void render(mat4 mvp) = 0;
 
     private:
