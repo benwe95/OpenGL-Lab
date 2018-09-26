@@ -10,7 +10,6 @@ class Triangle : public Mesh
 {
     public:
     Triangle(GLuint program);
-    void update(float time);
     void render(mat4 mvp);
 
     private:

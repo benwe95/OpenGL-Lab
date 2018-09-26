@@ -45,8 +45,6 @@ Triangle::Triangle(GLuint program) : Mesh(program)
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), (void*) (sizeof(float) * 2));
 }
 
-void Triangle::update(float time) {}
-
 void Triangle::render(mat4 mvp)
 {
     GLuint program = getProgram();
