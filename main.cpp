@@ -42,15 +42,16 @@ class MyApplication : public Application
 
 	void render()
 	{
-		mat4 mvp;
+		mat4 projection, view, model;
 		
 		// Création des matrice View et Projection
 		float ratio;
 		ratio = getWidth() / (float) getHeight();
-		mvp = perspective(30.f, ratio, 0.1f, 10);
-		mvp = mvp * lookat(vec3(0, -2, 2), vec3(0, 0, 0), vec3(0, 0, 1));
+		projection = perspective(30.f, ratio, 0.1f, 10);
+		view = lookat(vec3(0, -2, 2), vec3(0, 0, 0), vec3(0, 0, 1));
+		model = mat4::identity();
 
-		root->render(mvp);
+		root->render(projection, view, model);
 	}
 
 	void teardown()

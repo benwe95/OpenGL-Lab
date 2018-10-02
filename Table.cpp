@@ -64,16 +64,9 @@ Table::Table(GLuint program) : Mesh(program)
 	glBindTexture(GL_TEXTURE_2D, texture);
 }
 
-void Table::render(mat4 mvp)
+void Table::render(mat4 projection, mat4 view, mat4 model)
 {
-	GLuint program = getProgram();
-	glUseProgram(program);
-
-	// Récupération de la "location" de la variable "MVP" du pipeline
-	GLint mvp_location = glGetUniformLocation(program, "MVP");
-
-	// Association de la matrice MVP à la variable "MVP"
-	glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
+	Mesh::render(projection, view, model);
 
 	// Selection du VertexArray
 	glBindVertexArray(vertex_array);

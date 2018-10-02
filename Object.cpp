@@ -19,14 +19,14 @@ Object::~Object()
 	}
 }
 
-void Object::render(mat4 mvp)
+void Object::render(mat4 projection, mat4 view, mat4 model)
 {
-	mvp = mvp * translate(position) * rotation;
+	model = model * translate(position) * rotation;
 	if(mesh)
-		mesh->render(mvp);
+		mesh->render(projection, view, model);
 	for (vector<Object*>::iterator it = children.begin(); it!=children.end(); ++it)
 	{
-		(*it)->render(mvp);
+		(*it)->render(projection, view, model);
 	}
 }
 

@@ -13,7 +13,7 @@ class Mesh
 	public:
 	Mesh(GLuint program);
 	GLuint getProgram();
-	virtual void render(mat4 mvp) = 0;
+	virtual void render(mat4 projection, mat4 view, mat4 model);
 
 	private:
 	GLuint program;
