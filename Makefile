@@ -1,7 +1,7 @@
 all: lab
 
-lab: main.o Application.o shader.o Triangle.o Mesh.o Object.o
-	g++ -o lab main.o Application.o shader.o Triangle.o Mesh.o Object.o -lglfw3 -lglew32 -lopengl32 
+lab: main.o Application.o shader.o Triangle.o Mesh.o Object.o texture.o
+	g++ -o lab main.o Application.o shader.o Triangle.o Mesh.o Object.o texture.o -lglfw3 -lglew32 -lopengl32 -lpng
 
 main.o: main.cpp
 	g++ -o main.o -c main.cpp
@@ -20,6 +20,9 @@ Mesh.o: Mesh.cpp Mesh.h
 
 Object.o: Object.cpp Object.h
 	g++ -o Object.o -c Object.cpp
+
+texture.o: texture.cpp texture.h
+	g++ -o texture.o -c texture.cpp
 
 clean:
 	rm -rf *.o
