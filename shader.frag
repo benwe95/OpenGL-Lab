@@ -1,7 +1,8 @@
 #version 430
-in vec3 color;
-out vec3 Fragment;
+out vec4 Fragment;
+in vec2 fTex;
+uniform sampler2D Tex;
 void main()
 {
-    Fragment = color;
+    Fragment = texture(Tex, fTex);
 }

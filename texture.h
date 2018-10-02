@@ -4,6 +4,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-GLuint createTexture(char filename[]);
+GLuint createTexture(const char *filename);
 
 #endif

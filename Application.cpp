@@ -48,10 +48,17 @@ int Application::run()
     }
 
     glfwSwapInterval(1);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LEQUAL);
+	glDepthRange(0.0, 1.0);
+
+    glClearColor(0.7, 0.7, 0.7, 1.0);
+	glClearDepth(1.0f);
 
     setup();
 
@@ -60,7 +67,7 @@ int Application::run()
         glfwGetFramebufferSize(window, &width, &height);
 
         glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         update();
         render();

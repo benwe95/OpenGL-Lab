@@ -1,7 +1,7 @@
 // Author: Quentin Lurkin
 
 #include "Application.h"
-#include "Triangle.h"
+#include "Table.h"
 #include "Object.h"
 
 #include <iostream>
@@ -11,8 +11,8 @@ using namespace std;
 class MyApplication : public Application
 {
     private:
-    Triangle *triangle;
-    Object *root, *o, *o2;
+    Table *table;
+    Object *root;
 
     public:
     void setup()
@@ -28,22 +28,14 @@ class MyApplication : public Application
         program = createProgram(vertex_shader, fragment_shader);
 
         // Create a Triangle instance
-        triangle = new Triangle(program);
+        table = new Table(program);
 
-        root = new Object(triangle, vec3(0, 0, 0), mat4::identity());
-        o = new Object(triangle, vec3(3, 0, 0), mat4::identity());
-        o2 = new Object(triangle, vec3(1.5, 0, 0), mat4::identity());
-
-        o->setParent(root);
-        o2->setParent(o);
+        root = new Object(table, vec3(0, 0, 0), mat4::identity());
     }
 
     void update()
     {
-        //object->update((float) glfwGetTime());
         root->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
-        o->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
-        o2->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
     }
 
     void render()
@@ -53,7 +45,8 @@ class MyApplication : public Application
         // Création de la matrice ModelViewProjection
         float ratio;
         ratio = getWidth() / (float) getHeight();
-        mvp = ortho(-ratio*5, ratio*5, -5.f, 5.f, 1.f, -1.f);
+        mvp = perspective(30.f, ratio, 0.1f, 10);
+        mvp = mvp * lookat(vec3(0, -2, 2), vec3(0, 0, 0), vec3(0, 0, 1));
 
         root->render(mvp);
     }
@@ -61,7 +54,7 @@ class MyApplication : public Application
     void teardown()
     {
         delete root;
-        delete triangle;
+        delete table;
     }
 };
 
