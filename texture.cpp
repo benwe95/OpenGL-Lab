@@ -8,12 +8,14 @@
 
 using namespace std;
 
-bool loadPngImage(const char *name, int &outWidth, int &outHeight, bool &outHasAlpha, GLubyte **outData)
+bool loadPngImage(const char *name, int &outWidth, int &outHeight, bool &outHasAlpha, int &nbChanels, GLubyte **outData)
 {
 	png_structp png_ptr;
 	png_infop info_ptr;
 	unsigned int sig_read = 0;
 	int color_type, interlace_type;
+	bool gray = false;
+	outHasAlpha = false;
 
 	FILE *fp;
  
@@ -52,6 +54,12 @@ bool loadPngImage(const char *name, int &outWidth, int &outHeight, bool &outHasA
 				 &interlace_type, NULL, NULL);
 	outWidth = width;
 	outHeight = height;
+
+	if(color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) gray = true;
+
+	if(color_type == PNG_COLOR_TYPE_RGB_ALPHA || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) outHasAlpha = true;
+
+	nbChanels = (gray ? 1 : 3) + (outHasAlpha ? 1 : 0);
  
 	unsigned int row_bytes = png_get_rowbytes(png_ptr, info_ptr);
 	*outData = (unsigned char*) malloc(row_bytes * outHeight);
@@ -66,26 +74,42 @@ bool loadPngImage(const char *name, int &outWidth, int &outHeight, bool &outHasA
  
 	fclose(fp);
  
+	cout << "Image ("<< name <<") loaded " << width << "x" << height << " color(" << nbChanels << " chanels)" <<  endl;
 	return true;
 }
 
 GLuint createTexture(const char *filename)
 {
 	GLubyte *textureImage;
-	int width, height;
+	int width, height, nbChanels;
 	bool hasAlpha;
-	bool success = loadPngImage(filename, width, height, hasAlpha, &textureImage);
+	bool success = loadPngImage(filename, width, height, hasAlpha, nbChanels, &textureImage);
 	if (!success) {
 		cout << "Unable to load png file" << endl;
 		return 0;
 	}
-	cout << "Image loaded " << width << " " << height << " alpha " << hasAlpha << endl;
 
 	GLuint texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, hasAlpha ? GL_RGBA : GL_RGB, width, height, 0, hasAlpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, textureImage);
+	GLint format;
+	switch(nbChanels)
+	{
+		case 1:
+			format = GL_RED;
+			break;
+		case 2:
+			format = GL_RG;
+		case 3:
+			format = GL_RGB;
+			break;
+		case 4:
+			format = GL_RGBA; 
+			break;
+	} 
+
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, textureImage);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
