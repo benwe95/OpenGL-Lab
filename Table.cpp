@@ -24,9 +24,10 @@ Table::Table(GLuint program) : Mesh(program)
 	GLint vpos_location, vnor_location, vtex_location, tex_location;
 	GLuint texture, sampler, texUnit;
 
+	// Creation de la texture
 	texture = createTexture("textures/Rock_wall/diffuse.png");
 
-	// Récupération des "location" des variable "vPos" et "vCol" du pipeline
+	// Récupération des "location" des variable du pipeline
 	vpos_location = glGetAttribLocation(program, "vPos");
 	vnor_location = glGetAttribLocation(program, "vNor");
 	vtex_location = glGetAttribLocation(program, "vTex");
@@ -56,6 +57,7 @@ Table::Table(GLuint program) : Mesh(program)
 	glEnableVertexAttribArray(vtex_location);
 	glVertexAttribPointer(vtex_location, 2, GL_FLOAT, GL_FALSE, sizeof(vertices[0]), (void*) (sizeof(float) * 6));
 
+	// Association de la texture à la variable "Tex"
 	texUnit = 1;
 	glUniform1i(tex_location, texUnit);
 	glActiveTexture(GL_TEXTURE0 + texUnit);
@@ -65,13 +67,17 @@ Table::Table(GLuint program) : Mesh(program)
 void Table::render(mat4 mvp)
 {
 	GLuint program = getProgram();
-	GLint mvp_location = glGetUniformLocation(program, "MVP");
 	glUseProgram(program);
+
+	// Récupération de la "location" de la variable "MVP" du pipeline
+	GLint mvp_location = glGetUniformLocation(program, "MVP");
+
+	// Association de la matrice MVP à la variable "MVP"
 	glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
 
 	// Selection du VertexArray
 	glBindVertexArray(vertex_array);
 
-	// Affichage des 3 1ers sommets en utilisant des triangles.
+	// Affichage des 4 1ers sommets en utilisant des triangles fan.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }

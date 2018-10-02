@@ -27,14 +27,16 @@ class MyApplication : public Application
 		// Creation du pipeline 
 		program = createProgram(vertex_shader, fragment_shader);
 
-		// Create a Triangle instance
+		// Create a Mesh instance
 		table = new Table(program);
 
+		// Create an Object
 		root = new Object(table, vec3(0, 0, 0), mat4::identity());
 	}
 
 	void update()
 	{
+		// Update rotation of the object
 		root->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
 	}
 
@@ -42,7 +44,7 @@ class MyApplication : public Application
 	{
 		mat4 mvp;
 		
-		// Création de la matrice ModelViewProjection
+		// Création des matrice View et Projection
 		float ratio;
 		ratio = getWidth() / (float) getHeight();
 		mvp = perspective(30.f, ratio, 0.1f, 10);
