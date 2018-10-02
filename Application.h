@@ -11,18 +11,18 @@ using namespace vmath;
 
 class Application
 {
-    private:
-    int width = 0;
-    int height = 0;
+	private:
+	int width = 0;
+	int height = 0;
 
-    public:
-    virtual void setup() = 0;
-    virtual void update() = 0;
-    virtual void render() = 0;
-    virtual void teardown() = 0;
-    int run();
-    int getWidth();
-    int getHeight();
+	public:
+	virtual void setup() = 0;
+	virtual void update() = 0;
+	virtual void render() = 0;
+	virtual void teardown() = 0;
+	int run();
+	int getWidth();
+	int getHeight();
 };
 
 #endif

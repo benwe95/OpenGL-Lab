@@ -2,10 +2,10 @@
 
 Mesh::Mesh(GLuint program)
 {
-    this->program = program;
+	this->program = program;
 }
 
 GLuint Mesh::getProgram()
 {
-    return program;
+	return program;
 }

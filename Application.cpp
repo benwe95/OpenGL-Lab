@@ -5,50 +5,50 @@ using namespace std;
 
 static void error_callback(int error, const char* description)
 {
-    cout << "Error: " << description << endl;
+	cout << "Error: " << description << endl;
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
 int Application::run()
 {
-    GLFWwindow* window;
+	GLFWwindow* window;
 
-    cout << "Hello OpenGL" << endl;
-    glfwSetErrorCallback(error_callback);
+	cout << "Hello OpenGL" << endl;
+	glfwSetErrorCallback(error_callback);
 
-    if (!glfwInit())
-        return EXIT_FAILURE;
+	if (!glfwInit())
+		return EXIT_FAILURE;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(640, 480, "OpenGL Lab", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return EXIT_FAILURE;
-    }
+	window = glfwCreateWindow(640, 480, "OpenGL Lab", NULL, NULL);
+	if (!window)
+	{
+		glfwTerminate();
+		return EXIT_FAILURE;
+	}
 
-    glfwSetKeyCallback(window, key_callback);
+	glfwSetKeyCallback(window, key_callback);
 
-    glfwMakeContextCurrent(window);
-    
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        cout << "Failed to initialize GLEW" << endl;
-        return EXIT_FAILURE;
-    }
+	glfwMakeContextCurrent(window);
+	
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK)
+	{
+		cout << "Failed to initialize GLEW" << endl;
+		return EXIT_FAILURE;
+	}
 
-    glfwSwapInterval(1);
-    glEnable(GL_CULL_FACE);
+	glfwSwapInterval(1);
+	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 
@@ -57,46 +57,46 @@ int Application::run()
 	glDepthFunc(GL_LEQUAL);
 	glDepthRange(0.0, 1.0);
 
-    glClearColor(0.7, 0.7, 0.7, 1.0);
+	glClearColor(0.7, 0.7, 0.7, 1.0);
 	glClearDepth(1.0f);
 
-    setup();
+	setup();
 
-    while (!glfwWindowShouldClose(window))
-    {
-        glfwGetFramebufferSize(window, &width, &height);
+	while (!glfwWindowShouldClose(window))
+	{
+		glfwGetFramebufferSize(window, &width, &height);
 
-        glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, width, height);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        update();
-        render();
+		update();
+		render();
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
-        GLuint error = glGetError();
-        if(error != GL_NO_ERROR)
-        {
-            cout << "OpenGL ERROR: " << error << endl;
-        }
-    }
+		GLuint error = glGetError();
+		if(error != GL_NO_ERROR)
+		{
+			cout << "OpenGL ERROR: " << error << endl;
+		}
+	}
 
-    teardown();
+	teardown();
 
-    glfwDestroyWindow(window);
+	glfwDestroyWindow(window);
 
-    glfwTerminate();
+	glfwTerminate();
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 int Application::getWidth()
 {
-    return width;
+	return width;
 }
 
 int Application::getHeight()
 {
-    return height;
+	return height;
 }

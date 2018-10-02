@@ -10,13 +10,13 @@ using namespace vmath;
 
 class Mesh
 {
-    public:
-    Mesh(GLuint program);
-    GLuint getProgram();
-    virtual void render(mat4 mvp) = 0;
+	public:
+	Mesh(GLuint program);
+	GLuint getProgram();
+	virtual void render(mat4 mvp) = 0;
 
-    private:
-    GLuint program;
+	private:
+	GLuint program;
 };
 
 #endif

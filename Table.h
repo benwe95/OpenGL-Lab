@@ -8,12 +8,12 @@
 
 class Table : public Mesh
 {
-    public:
-    Table(GLuint program);
-    void render(mat4 mvp);
+	public:
+	Table(GLuint program);
+	void render(mat4 mvp);
 
-    private:
-    GLuint vertex_array;
+	private:
+	GLuint vertex_array;
 };
 
 #endif

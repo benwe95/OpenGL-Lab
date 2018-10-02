@@ -6,73 +6,73 @@ using namespace std;
 
 Object::Object(Mesh* mesh, vec3 position, mat4 rotation)
 {
-    this->mesh = mesh;
-    this->position = position;
-    this->rotation = rotation;
+	this->mesh = mesh;
+	this->position = position;
+	this->rotation = rotation;
 }
 
 Object::~Object()
 {
-    for (vector<Object*>::iterator it = children.begin(); it!=children.end(); ++it)
-    {
-        delete (*it);
-    }
+	for (vector<Object*>::iterator it = children.begin(); it!=children.end(); ++it)
+	{
+		delete (*it);
+	}
 }
 
 void Object::render(mat4 mvp)
 {
-    mvp = mvp * translate(position) * rotation;
-    if(mesh)
-        mesh->render(mvp);
-    for (vector<Object*>::iterator it = children.begin(); it!=children.end(); ++it)
-    {
-        (*it)->render(mvp);
-    }
+	mvp = mvp * translate(position) * rotation;
+	if(mesh)
+		mesh->render(mvp);
+	for (vector<Object*>::iterator it = children.begin(); it!=children.end(); ++it)
+	{
+		(*it)->render(mvp);
+	}
 }
 
 void Object::setParent(Object* parent)
 {
-    if(parent == NULL) return;
-    if(this->parent == parent) return;
-    this->parent = parent;
-    parent->addChild(this);
+	if(parent == NULL) return;
+	if(this->parent == parent) return;
+	this->parent = parent;
+	parent->addChild(this);
 }
 
 void Object::addChild(Object* child)
 {
-    vector<Object*>::iterator it;
-    it = std::find(children.begin(), children.end(), child);
-    if(it == children.end())
-    {
-        children.push_back(child);
-        child->setParent(this);
-    }
+	vector<Object*>::iterator it;
+	it = std::find(children.begin(), children.end(), child);
+	if(it == children.end())
+	{
+		children.push_back(child);
+		child->setParent(this);
+	}
 }
 
 void Object::unsetParent()
 {
-    if(parent == NULL) return;
-    Object* p = parent;
-    parent = NULL;
-    p->removeChild(this);
+	if(parent == NULL) return;
+	Object* p = parent;
+	parent = NULL;
+	p->removeChild(this);
 }
 
 void Object::removeChild(Object* child)
 {
-    vector<Object*>::iterator it;
-    it = find(children.begin(), children.end(), child);
-    if(it != children.end())
-    {
-        Object* found = *it;
-        children.erase(it);
-        found->unsetParent();
-    }
+	vector<Object*>::iterator it;
+	it = find(children.begin(), children.end(), child);
+	if(it != children.end())
+	{
+		Object* found = *it;
+		children.erase(it);
+		found->unsetParent();
+	}
 }
 
 vector<Object*> Object::getChildren()
 {
-    //return vector<Object*>(children);
-    return children;
+	//return vector<Object*>(children);
+	return children;
 }
 
 vec3 Object::getPosition() { return position; }

@@ -8,12 +8,12 @@
 
 class Triangle : public Mesh
 {
-    public:
-    Triangle(GLuint program);
-    void render(mat4 mvp);
+	public:
+	Triangle(GLuint program);
+	void render(mat4 mvp);
 
-    private:
-    GLuint vertex_array;
+	private:
+	GLuint vertex_array;
 };
 
 #endif

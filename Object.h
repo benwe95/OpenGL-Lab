@@ -14,29 +14,29 @@ using namespace std;
 
 class Object
 {
-    private:
-    vec3 position;
-    mat4 rotation;
-    Mesh* mesh;
-    vector<Object*> children;
-    Object* parent;
+	private:
+	vec3 position;
+	mat4 rotation;
+	Mesh* mesh;
+	vector<Object*> children;
+	Object* parent;
 
 
-    public:
-    Object(Mesh* mesh, vec3 position, mat4 roration);
-    ~Object();
-    void render(mat4 mvp);
-    void setParent(Object* parent);
-    void addChild(Object* child);
-    void unsetParent();
-    void removeChild(Object* child);
-    vector<Object*> getChildren();
+	public:
+	Object(Mesh* mesh, vec3 position, mat4 roration);
+	~Object();
+	void render(mat4 mvp);
+	void setParent(Object* parent);
+	void addChild(Object* child);
+	void unsetParent();
+	void removeChild(Object* child);
+	vector<Object*> getChildren();
 
-    vec3 getPosition();
-    mat4 getRotation();
-    void setPosition(vec3 position);
-    void setRotation(mat4 rotation);
-    Mesh* getMesh();
+	vec3 getPosition();
+	mat4 getRotation();
+	void setPosition(vec3 position);
+	void setRotation(mat4 rotation);
+	Mesh* getMesh();
 };
 
 //TODO: Objects Tree
