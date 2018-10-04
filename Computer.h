@@ -17,7 +17,7 @@ class Computer
     int workgroup_invocations;
 
     public:
-    Program(GLuint compute_shader);
+    Computer(GLuint compute_shader);
     void setData(int index, GLuint data);
     void compute(int count_x, int count_y, int count_z);
 };

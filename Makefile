@@ -1,7 +1,7 @@
 all: lab
 
-lab: main.o Application.o shader.o Table.o Mesh.o Object.o texture.o Program.o
-	g++ -o lab main.o Application.o shader.o Table.o Mesh.o Object.o texture.o Program.o -lglfw3 -lglew32 -lopengl32 -lpng
+lab: main.o Application.o shader.o Table.o Mesh.o Object.o texture.o Program.o Computer.o Triangle.o
+	g++ -o lab main.o Application.o shader.o Table.o Mesh.o Object.o texture.o Program.o Computer.o Triangle.o -lglfw3 -lglew32 -lopengl32 -lpng
 
 main.o: main.cpp
 	g++ -o main.o -c main.cpp
@@ -23,6 +23,12 @@ Object.o: Object.cpp Object.h
 
 Program.o: Program.cpp Program.h
 	g++ -o Program.o -c Program.cpp
+
+Computer.o: Computer.cpp Computer.h
+	g++ -o Computer.o -c Computer.cpp
+
+Triangle.o: Triangle.cpp Triangle.h
+	g++ -o Triangle.o -c Triangle.cpp
 
 texture.o: texture.cpp texture.h
 	g++ -o texture.o -c texture.cpp

@@ -5,15 +5,19 @@
 #include <GLFW/glfw3.h>
 
 #include "Mesh.h"
+#include "Computer.h"
 
 class Triangle : public Mesh
 {
 	public:
-	Triangle(GLuint program);
-	void render(mat4 mvp);
+	Triangle(Program *program);
+	void render(mat4 model);
+	void update();
 
 	private:
 	GLuint vertex_array;
+	GLuint vertex_buffer;
+	Computer *computer;
 };
 
 #endif

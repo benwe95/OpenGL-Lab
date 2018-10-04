@@ -39,13 +39,13 @@ Computer::Computer(GLuint compute_shader)
 void Computer::setData(int index, GLuint data)
 {
     glUseProgram(program);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, data;
-    glUseProgram(NULL);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, data);
+    glUseProgram(0);
 }
 
 void Computer::compute(int count_x, int count_y, int count_z)
 {
     glUseProgram(program);
     glDispatchCompute(count_x, count_y, count_z);
-    glUseProgram(NULL);
+    glUseProgram(0);
 }

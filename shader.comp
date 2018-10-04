@@ -8,6 +8,7 @@ struct Particle
     vec3 velocity;
     vec3 normal;
     vec3 tangent;
+    vec2 texture;
 };
 
 layout(binding = 1) buffer particlesBlock
@@ -21,7 +22,7 @@ void main()
     vec3 position = particles[index].position;
     vec3 velocity = particles[index].velocity;
     
-    velocity += (1.0/60.0) * vec3(0, -9.81, 0);
+    velocity += (1.0/60.0) * vec3(0, 0, -9.81);
     position += (1.0/60.0) * velocity;
 
     particles[index].velocity = velocity;

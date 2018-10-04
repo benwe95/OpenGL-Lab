@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "Table.h"
+#include "Triangle.h"
 #include "Object.h"
 #include "Program.h"
 
@@ -13,6 +14,7 @@ class MyApplication : public Application
 {
 	private:
 	Table *table;
+	Triangle *triangle;
 	Object *root;
 	Program *program;
 
@@ -31,15 +33,17 @@ class MyApplication : public Application
 
 		// Create a Mesh instance
 		table = new Table(program);
+		triangle = new Triangle(program);
 
 		// Create an Object
-		root = new Object(table, vec3(0, 0, 0), mat4::identity());
+		root = new Object(triangle, vec3(0, 0, 0), mat4::identity());
 	}
 
 	void update()
 	{
 		// Update rotation of the object
-		root->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
+		//root->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
+		triangle->update();
 	}
 
 	void render()
@@ -63,6 +67,7 @@ class MyApplication : public Application
 	{
 		delete root;
 		delete table;
+		delete triangle;
 		delete program;
 	}
 };
