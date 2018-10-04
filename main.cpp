@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Table.h"
 #include "Object.h"
+#include "Program.h"
 
 #include <iostream>
 
@@ -13,11 +14,12 @@ class MyApplication : public Application
 	private:
 	Table *table;
 	Object *root;
+	Program *program;
 
 	public:
 	void setup()
 	{
-		GLuint vertex_shader, fragment_shader, program;
+		GLuint vertex_shader, fragment_shader;
 		GLint view_location;
 
 		// Chargement des shaders
@@ -25,7 +27,7 @@ class MyApplication : public Application
 		vertex_shader = loadShader("shader.vert", GL_VERTEX_SHADER);
 
 		// Creation du pipeline 
-		program = createProgram(vertex_shader, fragment_shader);
+		program = new Program(vertex_shader, fragment_shader);
 
 		// Create a Mesh instance
 		table = new Table(program);
@@ -51,13 +53,17 @@ class MyApplication : public Application
 		view = lookat(vec3(0, -2, 2), vec3(0, 0, 0), vec3(0, 0, 1));
 		model = mat4::identity();
 
-		root->render(projection, view, model);
+		setProjection(projection);
+		setView(view);
+
+		root->render(model);
 	}
 
 	void teardown()
 	{
 		delete root;
 		delete table;
+		delete program;
 	}
 };
 

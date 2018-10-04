@@ -3,6 +3,9 @@
 
 using namespace std;
 
+mat4 Application::projection = mat4::identity();
+mat4 Application::view = mat4::identity();
+
 static void error_callback(int error, const char* description)
 {
 	cout << "Error: " << description << endl;
@@ -99,4 +102,24 @@ int Application::getWidth()
 int Application::getHeight()
 {
 	return height;
+}
+
+void Application::setProjection(mat4 matrix)
+{
+	projection = matrix;
+}
+
+mat4 Application::getProjection()
+{
+	return projection;
+}
+
+void Application::setView(mat4 matrix)
+{
+	view = matrix;
+}
+
+mat4 Application::getView()
+{
+	return view;
 }

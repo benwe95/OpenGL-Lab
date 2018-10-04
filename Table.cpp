@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Table::Table(GLuint program) : Mesh(program)
+Table::Table(Program *program) : Mesh(program)
 {   
 	// Définition des VertexData
 	const struct
@@ -28,10 +28,10 @@ Table::Table(GLuint program) : Mesh(program)
 	texture = createTexture("textures/Rock_wall/diffuse.png");
 
 	// Récupération des "location" des variable du pipeline
-	vpos_location = glGetAttribLocation(program, "vPos");
-	vnor_location = glGetAttribLocation(program, "vNor");
-	vtex_location = glGetAttribLocation(program, "vTex");
-	tex_location = glGetUniformLocation(program, "Tex");
+	vpos_location = glGetAttribLocation(program->getId(), "vPos");
+	vnor_location = glGetAttribLocation(program->getId(), "vNor");
+	vtex_location = glGetAttribLocation(program->getId(), "vTex");
+	tex_location = glGetUniformLocation(program->getId(), "Tex");
 
 	// Création du VertexArray
 	glGenVertexArrays(1, &vertex_array);
@@ -40,10 +40,12 @@ Table::Table(GLuint program) : Mesh(program)
 	// Définition du vertexBuffer
 	GLuint vertex_buffer;
 	glGenBuffers(1, &vertex_buffer);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, vertex_buffer);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glUseProgram(program);
+	program->bind();
 
 	// Association des 3 1ères composantes des VertexData à la variable "vPos" du pipeline
 	glEnableVertexAttribArray(vpos_location);
@@ -62,15 +64,20 @@ Table::Table(GLuint program) : Mesh(program)
 	glUniform1i(tex_location, texUnit);
 	glActiveTexture(GL_TEXTURE0 + texUnit);
 	glBindTexture(GL_TEXTURE_2D, texture);
+
+	program->unbind();
 }
 
-void Table::render(mat4 projection, mat4 view, mat4 model)
+void Table::render(mat4 model)
 {
-	Mesh::render(projection, view, model);
+	//Mesh::render(projection, view, model);
+	getProgram()->begin(model);
 
 	// Selection du VertexArray
 	glBindVertexArray(vertex_array);
 
 	// Affichage des 4 1ers sommets en utilisant des triangles fan.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+	getProgram()->end();
 }

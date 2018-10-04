@@ -5,6 +5,5 @@
 #include <GLFW/glfw3.h>
 
 GLuint loadShader(const char* path, GLenum shaderType);
-GLuint createProgram(GLuint vertex_shader, GLuint fragment_shader);
 
 #endif

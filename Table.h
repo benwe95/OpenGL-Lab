@@ -9,8 +9,8 @@
 class Table : public Mesh
 {
 	public:
-	Table(GLuint program);
-	void render(mat4 projection, mat4 view, mat4 model);
+	Table(Program *program);
+	void render(mat4 model);
 
 	private:
 	GLuint vertex_array;

@@ -25,7 +25,7 @@ class Object
 	public:
 	Object(Mesh* mesh, vec3 position, mat4 roration);
 	~Object();
-	void render(mat4 projection, mat4 view, mat4 model);
+	void render(mat4 model);
 	void setParent(Object* parent);
 	void addChild(Object* child);
 	void unsetParent();

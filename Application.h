@@ -14,6 +14,8 @@ class Application
 	private:
 	int width = 0;
 	int height = 0;
+	static mat4 projection;
+	static mat4 view;
 
 	public:
 	virtual void setup() = 0;
@@ -23,6 +25,10 @@ class Application
 	int run();
 	int getWidth();
 	int getHeight();
+	static void setProjection(mat4 matrix);
+	static mat4 getProjection();
+	static void setView(mat4 matrix);
+	static mat4 getView();
 };
 
 #endif

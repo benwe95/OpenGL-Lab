@@ -47,27 +47,3 @@ GLuint loadShader(const char* path, GLenum shaderType)
 
 	return id;
 }
-
-GLuint createProgram(GLuint vertex_shader, GLuint fragment_shader)
-{
-	GLuint program = glCreateProgram();
-	glAttachShader(program, vertex_shader);
-	glAttachShader(program, fragment_shader);
-	glLinkProgram(program);
-
-	GLint status;
-	glGetProgramiv (program, GL_LINK_STATUS, &status);
-	if (status == GL_FALSE)
-	{
-		GLint infoLogLength;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
-		
-		GLchar *strInfoLog = new GLchar[infoLogLength + 1];
-		glGetProgramInfoLog(program, infoLogLength, NULL, strInfoLog);
-
-		cout << "Program link error: " << strInfoLog;
-		delete[] strInfoLog;
-	}
-
-	return program;
-}
