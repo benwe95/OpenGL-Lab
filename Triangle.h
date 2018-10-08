@@ -11,12 +11,14 @@ class Triangle : public Mesh
 {
 	public:
 	Triangle(Program *program);
+	~Triangle();
 	void render(mat4 model);
 	void update();
 
 	private:
 	GLuint vertex_array;
 	GLuint vertex_buffer;
+	GLuint *indices;
 	Computer *computer;
 };
 

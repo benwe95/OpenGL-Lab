@@ -27,6 +27,12 @@ Triangle::Triangle(Program *program) : Mesh(program)
 		{vec3(0.f, 0.6f, 0.f), 1.f, vec3(0.f, 0.f, 0.f), 1.f, vec3(0.f, 0.f, 1.f), 1.f, vec3(1.f, 0.f, 0.f), 1.f, vec2(0.5f, 1.f), 1.f, 1.f }
 	};
 
+	// 
+	indices = new GLuint[3];
+	indices[0] = 0;
+	indices[1] = 1;
+	indices[2] = 2;
+
 	GLint vpos_location, vtex_location, tex_location;
 	GLuint texture, sampler, texUnit;
 
@@ -62,6 +68,12 @@ Triangle::Triangle(Program *program) : Mesh(program)
 	computer->setData(1, vertex_buffer);
 }
 
+Triangle::~Triangle()
+{
+	delete[] indices;
+	delete computer;
+}
+
 void Triangle::update()
 {
 	computer->compute(1, 1, 1);
@@ -75,7 +87,7 @@ void Triangle::render(mat4 model)
 	glBindVertexArray(vertex_array);
 
 	// Affichage des 3 1ers sommets en utilisant des triangles.
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, indices);
 
 	getProgram()->end();
 }
