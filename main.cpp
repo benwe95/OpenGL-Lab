@@ -13,7 +13,6 @@ using namespace std;
 class MyApplication : public Application
 {
 	private:
-	Table *table;
 	Triangle *triangle;
 	Object *root;
 	Program *program;
@@ -32,7 +31,6 @@ class MyApplication : public Application
 		program = new Program(vertex_shader, fragment_shader);
 
 		// Create a Mesh instance
-		table = new Table(program);
 		triangle = new Triangle(program);
 
 		// Create an Object
@@ -66,7 +64,6 @@ class MyApplication : public Application
 	void teardown()
 	{
 		delete root;
-		delete table;
 		delete triangle;
 		delete program;
 	}

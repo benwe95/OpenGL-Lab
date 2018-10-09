@@ -18,8 +18,11 @@ class Triangle : public Mesh
 	private:
 	GLuint vertex_array;
 	GLuint vertex_buffer;
+	GLuint texture;
+	GLuint texUnit;
 	GLuint *indices;
-	Computer *computer;
+	Computer *acceleration;
+	Computer *cinematic;
 };
 
 #endif

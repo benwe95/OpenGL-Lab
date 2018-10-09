@@ -32,7 +32,7 @@ int Application::run()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(640, 480, "OpenGL Lab", NULL, NULL);
+	window = glfwCreateWindow(1024, 768, "OpenGL Lab", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -51,6 +51,7 @@ int Application::run()
 	}
 
 	glfwSwapInterval(1);
+	glPointSize(4);
 	glDisable(GL_CULL_FACE);
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
