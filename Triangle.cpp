@@ -76,6 +76,11 @@ Triangle::Triangle(Program *program) : Mesh(program)
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 
+	GLuint index_buffer;
+	glGenBuffers(1, &index_buffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 3, indices, GL_STATIC_DRAW);
+
 	program->bind();
 
 	// Association des composantes des VertexData à la variable "vPos" du pipeline
@@ -132,7 +137,7 @@ void Triangle::render(mat4 model)
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	// Affichage des 3 1ers sommets en utilisant des triangles.
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, indices);
+	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*) 0);
 
 	getProgram()->end();
 }
