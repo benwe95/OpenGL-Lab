@@ -1,5 +1,5 @@
-#ifndef TRIANGLE_MESH_H
-#define TRIANGLE_MESH_H
+#ifndef SPHERE_MESH_H
+#define SPHERE_MESH_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -7,11 +7,11 @@
 #include "Mesh.h"
 #include "Computer.h"
 
-class Triangle : public Mesh
+class Sphere : public Mesh
 {
 	public:
-	Triangle(Program *program);
-	~Triangle();
+	Sphere(Program *program);
+	~Sphere();
 	void render(mat4 model);
 	void update();
 
@@ -19,10 +19,8 @@ class Triangle : public Mesh
 	GLuint vertex_array;
 	GLuint vertex_buffer;
 	GLuint texture;
-	GLuint texUnit;
-	GLuint *indices;
-	Computer *acceleration;
-	Computer *cinematic;
+    GLuint texUnit;
+    int radius, stacks, sectors, vertexCount;
 };
 
 #endif

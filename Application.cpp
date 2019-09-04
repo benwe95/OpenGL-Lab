@@ -3,6 +3,12 @@
 
 using namespace std;
 
+/* RAPPEL - Matrice identité:
+    | 1 0 0 0 |
+    | 0 1 0 0 |
+    | 0 0 1 0 |
+	| 0 0 0 1 |
+*/
 mat4 Application::projection = mat4::identity();
 mat4 Application::view = mat4::identity();
 
@@ -19,6 +25,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int Application::run()
 {
+	/* Création de la fenêtre grâce à GLFW3 */
 	GLFWwindow* window;
 
 	cout << "Hello OpenGL" << endl;
@@ -27,6 +34,7 @@ int Application::run()
 	if (!glfwInit())
 		return EXIT_FAILURE;
 
+	/* Paramètre de compatibilité,... */
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -53,9 +61,6 @@ int Application::run()
 	glfwSwapInterval(1);
 	glPointSize(4);
 	glDisable(GL_CULL_FACE);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CCW);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
@@ -74,6 +79,7 @@ int Application::run()
 		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		/* les fonctions qui mettent à jour le contenu de la fenêtre active */
 		update();
 		render();
 

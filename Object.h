@@ -12,6 +12,13 @@
 using namespace vmath;
 using namespace std;
 
+/* la classe Object représente un element de l'espace (sphère, cube, drap, ...)
+Cet élément est défini par un ensemble de vertices ( = MESH).
+L'élément (chacun de ses vertex) va subir différentes transformations pour être positionné
+correctement dans l'espace de rendu.
+Ces transformations sont définies par le VERTEX_SHADER qui est lié à un 'program', lui-même
+lié à un 'Mesh' -> MAIS il faut leur fournir les valeurs des matrices de PROJ, VIEW et MOD
+qui sont propre à chaque objet */
 class Object
 {
 	private:
@@ -38,7 +45,5 @@ class Object
 	void setRotation(mat4 rotation);
 	Mesh* getMesh();
 };
-
-//TODO: Objects Tree
 
 #endif

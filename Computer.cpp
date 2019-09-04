@@ -11,6 +11,7 @@ Computer::Computer(GLuint compute_shader)
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &workgroup_count[1]);
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &workgroup_count[2]);
 
+
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &workgroup_size[0]);
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &workgroup_size[1]);
     glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &workgroup_size[2]);
@@ -43,6 +44,11 @@ void Computer::setData(int index, GLuint data)
     glUseProgram(0);
 }
 
+/*
+void glDispatchCompute(GLuint num_groups_x​, GLuint num_groups_y​, GLuint num_groups_z​);
+
+The num_groups_*​ parameters define the work group count, in three dimensions. 
+These numbers cannot be zero. There are limitations on the number of work groups that can be dispatched. */
 void Computer::compute(int count_x, int count_y, int count_z)
 {
     glUseProgram(program);

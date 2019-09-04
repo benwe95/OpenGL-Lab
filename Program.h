@@ -8,6 +8,9 @@
 
 using namespace vmath;
 
+/* Un program permet de faire exécuter des shaders par la garte graphique.
+En effet, un shader lui-même n'est pas exécutable par le CPU, il faut donc le passer à un
+program (qui lui est éxécutable) pour l'envoyer vers le GPU */
 class Program
 {
     private:
