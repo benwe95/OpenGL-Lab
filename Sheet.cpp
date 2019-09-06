@@ -6,8 +6,8 @@
 
 using namespace std;
 
-#define X_VERTIC 5
-#define Y_HORIZ 5
+#define VERTIC 50
+#define HORIZ 50
 
 Sheet::Sheet(Program *program) : Mesh(program)
 {   
@@ -16,72 +16,96 @@ Sheet::Sheet(Program *program) : Mesh(program)
         - coordonnées normales;
         - coordonnées textures
     */
-    struct Vertex
-    {
-        vec3 position;
-        vec3 normal;
-        vec2 texture;
-        vec3 velocity;
-        vec3 acceleration;
+	struct Vertex
+	{
+		vec3 position;
+		float p1;
+		vec3 velocity;
+		float p2;
+		vec3 acceleration;
+		float p3;
+		vec3 normal;
+		float p4;
 		vec3 tangent;
-    };
+		float p5;
+		vec2 texture;
+		float p6, p7;
+	};
 
 	
-	Vertex vertices[X_VERTIC * Y_HORIZ];
+	Vertex vertices[VERTIC*HORIZ];
 
 	float x, y = 0;
 	int index = 0;
+    float texX, texY = 0;
+    float texXIncrement = 1/float(VERTIC-1);
+    float texYIncrement = 1/float(HORIZ-1);
 	/* Génération des vertex, positionnés de part et d'autre de l'origine du
 	repère local */
-	for(int xIncrement=0; xIncrement<X_VERTIC; xIncrement++)
-	{
+    for(int row=0; row< HORIZ; row++)
+	{	
+		x = 0;
+		y = row - (HORIZ-1)/float(2);
+		y = y/float((HORIZ-1)/2);
 
-		for(int jIncrement=0; jIncrement<Y_HORIZ; jIncrement++)
-		{
-			x = (xIncrement - (X_VERTIC/2)) / float(X_VERTIC/2);
-			y = (jIncrement - (Y_HORIZ/2)) / float(Y_HORIZ/2);
-			vertices[index].position = vec3(x, y, 1.5);
+		for(int column=0; column<VERTIC; column++)
+		{	
+			/* La coordonée est translatée pour la recentrer et ensuite elle est normalisée */
+			x = column - (VERTIC-1)/float(2);
+			x = x/float((VERTIC-1)/2);
 
-			vertices[index].velocity = vec3(0.f, 0.0f, 0.f);
-			vertices[index].acceleration = vec3(0.f, 0.0f, 0.f);
+			vertices[index].position = vec3(x, y, 1.5f);
+
+            vertices[index].velocity = vec3(0.f, 0.0f, 0.f);
+			vertices[index].acceleration = vec3(0.f, 0.0f, -0.1f);
 			vertices[index].normal = vec3(0.f, 0.f, 1.f);
 			vertices[index].tangent = vec3(1.f, 0.f, 0.f);
 
-			float nx = float(jIncrement) / float(50);
-			float ny = float(xIncrement) / float(50);
-			vertices[index].texture = vec2(nx, ny);
+			//cout << index << " : ( " << x << " : " << y << " )" <<endl;
 
-			/* DEBUG
-			cout << index << " (" << x << " : " << y << ")\t";*/
+            /* Pour associer une texture au mesh, il faut dire pour chaque vertex 
+            (de chaque triangle) à quelle partie de la texture (l'image png) 
+            il correspond -> ensuite, le remplissage de chaque triangle se fait
+            automatiquement par interpolation.
+
+            Chaque vertex possède donc deux coordonées texX et texY qui correspondent
+            aux positions (x, y) sur l'image de la texture.
+
+            Ces valeurs sont comprises entre 0 et 1 
+            -> (0, 0) coin inférieur gauche de l'image texture
+            -> (1, 1) coin supérieur droit de l'image texture */
+			texX = float(column) * float(texXIncrement);
+			texY = float(row) * float(texYIncrement);
+			vertices[index].texture = vec2(texX, texY);
+
+            //cout << index << " texCoord: ( " << texX << " : " << texY << " )" <<endl;
 
 			index++;
 		}
+    }
 
-		cout << "\n";
-	}
-
-	int indicesCount = (X_VERTIC-1)*(Y_HORIZ-1)*6;
+	indicesCount = (VERTIC-1) * (HORIZ-1) * 6; 
 	indices = new GLuint[indicesCount];
 	/* Le tissu peut être vu comme une succession de petit rectangle, 
 	chacun étant composé de deux triangles, soit 6 vertices que l'on peut 
 	décrire comme ceci:
 
-	K1     K1+1
+	K2     K2+1
 	 _____
-	|   / |
-	|  /  |
-	|_/___|
-	K2     K2+1      
+	| \   |
+	|  \  |
+	|___\_|
+	K1     K1+1      
 	
 	Les triangles sont parcourus de la façon suivante:
 	K1   => K2 => K1+1
 	K1+1 => K2 => K2+1 */
-	int k1, k2;
 	int currentIndex = 0;
-	for (int xIncrement = 0; xIncrement<X_VERTIC-1; xIncrement++)
-	{
-		k1 = xIncrement * (X_VERTIC);
-		k2 = k1 + X_VERTIC;
+	int k1, k2 = 0;
+	for(int row=0; row < HORIZ-1; row++)
+	{	
+		k1 = row * VERTIC;
+		k2 = k1 + VERTIC;
 
         /*DEBUG
 		cout << "\n\n============= xIncrement: " << xIncrement << " =============\n" << endl;
@@ -89,34 +113,38 @@ Sheet::Sheet(Program *program) : Mesh(program)
 
 		/* Pour chaque rectangle, on reporte les indices des vertex (selon la liste 'vertices')
 		qui composent les deux triangles */
-		for(int yIncrement = 0; yIncrement<Y_HORIZ-1; yIncrement++)
+		for (int column=0; column < VERTIC-1; column ++)
 		{
 			indices[currentIndex] = k1;
 			indices[currentIndex+1] = k2;
 			indices[currentIndex+2] = k1+1;
 			indices[currentIndex+3] = k1+1;
 			indices[currentIndex+4] = k2;
-			indices[currentIndex+5] = k2+1;
+			indices[currentIndex+5] = k2+1; 
 
 			/* DEBUG
+            cout << currentIndex
+				 << "\tleft: " << k1 << " => " << k2 << " => " << k1+1 
+				 << "\n\tright: " << k1+1 << " => " << k2 << " => " << k2+1 << endl;
+
 			cout << "\n\n\t\t------- yIncrement: " << yIncrement << " -------\n" << endl;
         	cout << "\n\t\t\tk1: " << k1 << "\tx: " << vertices[k1].position[0] << "\ty: " << vertices[k1].position[1]
              	 << "\n\t\t\tk2: " << k2 << "\tx: " << vertices[k2].position[0] << "\ty: " << vertices[k2].position[1]
 				 << "\n\t\t\tk1+1: " << k1+1 << "\tx: " << vertices[k1+1].position[0] << "\ty: " << vertices[k1+1].position[1]
 				 << "\n\t\t\tk2+1: " << k2+1 << "\tx: " << vertices[k2+1].position[0] << "\ty: " << vertices[k2+1].position[1] << endl;
 			*/
-			
+
+			k1 ++ ;
+			k2 ++ ;
+
 			currentIndex = currentIndex + 6;
-			k1++;
-			k2++;
 		}
 	}
-
 
 	GLint vpos_location, vtex_location, tex_location, vnor_location;
 
 	// Creation de la texture
-	texture = createTexture("textures/Knited_Fabric/Knited_Fabric.png");
+	texture = createTexture("textures/Knited_Fabric_001_SD/Knited_Fabric_001_COLOR.png");
 
 	// Récupération des "location" des variable "vPos" et "vCol" du pipeline
 	vpos_location = glGetAttribLocation(program->getId(), "vPos");
@@ -165,10 +193,6 @@ Sheet::Sheet(Program *program) : Mesh(program)
 	collide = new Computer(collide_shader);
 	collide->setData(1, vertex_buffer);
 
-	/*GLuint acceleration_shader = loadShader("acceleration.comp", GL_COMPUTE_SHADER);
-	acceleration = new Computer(acceleration_shader);
-	acceleration->setData(1, vertex_buffer);*/
-
 	GLuint cinematic_shader = loadShader("cinematic.comp", GL_COMPUTE_SHADER);
 	cinematic = new Computer(cinematic_shader);
 	cinematic->setData(1, vertex_buffer);
@@ -178,7 +202,6 @@ Sheet::~Sheet()
 {
 	delete[] indices;
 	delete collide;
-	//delete acceleration;
 	delete cinematic;
 }
 
@@ -186,8 +209,6 @@ void Sheet::update()
 {
 	collide->compute(79, 1, 1);
 	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
-	/*acceleration->compute(1, 1, 1);
-	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);*/
 	cinematic->compute(79, 1, 1);
 	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 }
@@ -205,8 +226,7 @@ void Sheet::render(mat4 model)
 	glActiveTexture(GL_TEXTURE0 + texUnit);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	int trianglesCount = (X_VERTIC-1) * (Y_HORIZ-1);
-	glDrawElements(GL_TRIANGLES, trianglesCount*6, GL_UNSIGNED_INT, (void*) 0);
+	glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, (void*) 0);
 
 	getProgram()->end();
 }

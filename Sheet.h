@@ -1,5 +1,5 @@
-#ifndef SHEET_MESH_H
-#define SHEET_MESH_H
+#ifndef Sheet_MESH_H
+#define Sheet_MESH_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -14,6 +14,7 @@ class Sheet : public Mesh
     GLuint texture;
     GLuint texUnit;
     GLuint *indices;
+    int indicesCount;
     Computer *collide;
     Computer *acceleration;
     Computer *cinematic;

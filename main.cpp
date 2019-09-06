@@ -1,4 +1,4 @@
-﻿/* Gestion de la fenêtre de rendu */
+/* Gestion de la fenêtre de rendu */
 #include "Application.h"
 
 /* */
@@ -54,15 +54,15 @@ class MyApplication : public Application
     void update()
     {
         //sheet->update();
-        //root_sphere->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
+        root_sphere->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
         //root_sheet->setRotation(rotate((float) glfwGetTime()*20, 0.0f, 0.0f, 1.0f));
-        //sheet->update();
+        sheet->update();
     }
 
     /* Implémentation de la fonction virtuelle Application::render() */
     void render()
     {
-        mat4 projection, view, model_sheet, model_sphere;
+        mat4 projection, view, model;
 
         /* Le ratio est caclué sur base des dimensions de la fenêtre d'affichage 
         REM: les matrices de vue et de projection sont COMMUNES à tous les objets de l'espace ..... */        
@@ -77,14 +77,12 @@ class MyApplication : public Application
 
         /* ...... tandis que la matrice de model (qui positionne l'objet dans l'espace global) est propre
         à caque objet*/
-        model_sphere = mat4::identity();
         /* La matrice de modèle du tissu fait en sorte que celui-ci soit translaté de X unités vers le haut
         par rapport au centre du repère GLOBAL */
-        model_sheet = mat4::identity();
-        model_sheet[0][3] = 10;
+        model= mat4::identity();
 
-        root_sphere->render(model_sphere);
-        root_sheet->render(model_sphere);
+        root_sphere->render(model);
+        root_sheet->render(model);
     }
 
     void teardown()
